@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- /src/main/java/applicationContext.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+             http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="project" class="chap2.Project">
+		<property name="srcdirs">
+			<list>
+				<value>src/</value>
+				<value>srcResource/</value>
+			</list>
+		</property>
+		<property name="bindir" value="bin/" />
+		<property name="classpath" value="src/" />
+		<property name="b"><ref bean="runner"/></property>
+	</bean>
+	<bean id="runner" class="chap2.BuildRunner">
+		<property name="path" value="c:/setup/"/>
+	</bean>
+	<bean id="write" class="chap2.WriteImp1">
+		<constructor-arg><ref bean="dao" /></constructor-arg>
+	</bean> <!--  상속하거나 구현하거나 
+	dao 는 ArticleDao 클래스 타입으로 들어가야됨  -->
+	<bean id="dao" class="chap2.OracleArticleDao"/>
+	<!-- ArticleDao로 주입되어야하기 때문에 OracleArticleDao가  ArticleDao
+	로 형변환이 가능해야함   -->
+	
+</beans> <!-- beans 객체 안에 greeter객체를 만듦 greeter객체 안에는 format, greet, setformat() 메서드가 
+	있음 -->
+

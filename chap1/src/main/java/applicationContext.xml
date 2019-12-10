@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- /src/main/java/applicationContext.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+             http://www.springframework.org/schema/beans/spring-beans.xsd">
+<bean id="greeter" class="chap1.Greeter">
+	<property name="format" value="%s을 시작합니다." /><!--  property 는 set메서드를 호출함  -->
+</bean><!--          setformat 메서드에  %s을 시작합니다. 라는 매개변수  -->
+<bean id="message" class="chap1.MessageEn" />
+</beans> <!--  beans 객체 안에 greeter객체를 만듦 
+greeter객체 안에는 format, greet, setformat() 메서드가 있음  -->
+
