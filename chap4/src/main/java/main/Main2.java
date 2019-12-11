@@ -13,7 +13,7 @@ public class Main2 {
 		// ctx : xml.ReadArticleServiceImpl 객체 저장
 		ReadArticleService service = ctx.getBean("readArticleService", ReadArticleService.class);
 		// ctx 는 ReadAricleService를 구현한 구현클래스이므로 형변환 가능
-		try { 
+		try {  // 핵심로직 .get ~ 
 			Article a1 = service.getArticleAndReadCnt(1);
 		// 	System.out.println(a1); 로직 어드바이스 먼저 호출한후 a1에 동일한 리턴 값을 저장하게됨
 			Article a2 = service.getArticleAndReadCnt(1);

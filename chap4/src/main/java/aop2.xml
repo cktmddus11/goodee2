@@ -15,7 +15,7 @@
 	<bean id="loggingAdvice" class="xml.LoggingAdvice"/>
 	<bean id="cacheAdvice" class="xml.ArticleCacheAdvice"/>
 	<aop:config> 
-		<aop:aspect id="cacheAspect" ref="cacheAdvice" order="2"> <!--  order 실행 순서 -->
+		<aop:aspect id="cacheAspect" ref="cacheAdvice" order="2"> <!--  order 실행 순서 , 근데 ceche after에서는 3 , 2 로 됨??-->
 			<aop:around method="cache" pointcut="execution(public * *..ReadArticleService.*(..))"/>
 		</aop:aspect>
 		
