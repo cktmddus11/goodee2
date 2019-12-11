@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- /src/main/java/applicationContext.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	
+	 http://www.springframework.org/schema/beans/spring-beans.xsd
+	 http://www.springframework.org/schema/context
+	 http://www.springframework.org/schema/context/spring-context.xsd 
+	 http://www.springframework.org/schema/aop
+	  http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<bean id="loggingAdvice" class="xml.LoggingAdvice"/>
+	<bean id="cacheAdvice" class="xml.ArticleCacheAdvice"/>
+	<aop:config> 
+		<aop:aspect id="cacheAspect" ref="cacheAdvice" order="2"> <!--  order 실행 순서 -->
+			<aop:around method="cache" pointcut="execution(public * *..ReadArticleService.*(..))"/>
+		</aop:aspect>
+		
+		<aop:aspect id="loggingAspect" ref="loggingAdvice" order="3">
+			<aop:pointcut id="publicMethod" expression="execution(public * xml..*(..))"/>
+			<!--  advice ?? 핵심로진 시작 전후 설정? -->
+			<aop:before method="before" pointcut-ref="publicMethod"/>
+			                                                          <!--  publicMethod : 핵심로직?  ret : 핵심로직 결과값리턴? -->
+			<aop:after-returning method="afterReturning" pointcut-ref="publicMethod" returning = "ret"/>
+			<aop:after-throwing method="afterThrowing" pointcut-ref="publicMethod" throwing="ex"/>
+			<aop:after method="afterFinally" pointcut-ref="publicMethod"/>
+		</aop:aspect>
+	</aop:config>
+	
+</beans>
