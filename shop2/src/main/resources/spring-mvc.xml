@@ -11,18 +11,17 @@
 	<!-- handlerMapping : url과 Controller 연결 -->
 	 <bean id="handlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
  		<property name="mappings"> <!-- 프로퍼티 설정같은거 -->
-	 		<value>/index.shop=indexController
-	 			   /detail.shop=detailController        
+	 		<value>
+	 			userEntry.shop=userEntryController
 	 		</value> <!--  요청이 들어오면 -->
 	 	</property>
 	 </bean> <!-- 서버가 시작될때 아래 객체들이 이미 준비중 -->
-	 <!--  index -->
-	 <bean id="indexController" class="controller.IndexController" p:shopService-ref="shopService" />
-	 <!--  detail -->
-	 <bean id="detailController" class="controller.DetailController" p:shopService-ref="shopService" />
-	 
-	 <bean id="shopService" class="logic.ShopService" p:itemDao-ref="itemDao"/>
-	 <bean id="itemDao" class="dao.ItemDao" p:dataSource-ref="dataSource" />
+	 <bean id="userEntryController" class="controller.UserEntryController" 
+	 			p:shopService-ref="shopService" 
+	 			p:userValidator-ref="userValidator"/>
+	 <bean id="shopService" class="logic.ShopService" p:userDao-ref="userDao"/>
+	 <bean id="userValidator" class="util.UserValidator" />
+	 <bean id="userDao" class="dao.UserDao" p:dataSource-ref="dataSource"/>
 	 <!--  뷰 결정자           (webapp가 루트 폴더)
 	 	/WEB-INF/view/index.jsp
 	 -->
@@ -35,6 +34,13 @@
 	 	</property>
 	 	<property name="suffix">
 	 		<value>.jsp</value>
+	 	</property>
+	 </bean>
+	 <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	 	<property name="basenames">
+	 		<list><!--  messages.properties 파일 찾음  -->
+	 			<value>messages</value>
+	 		</list>
 	 	</property>
 	 </bean>
 </beans>
