@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- /src/main/java/applicationContext.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	 http://www.springframework.org/schema/beans/spring-beans.xsd
+	 http://www.springframework.org/schema/context
+	 http://www.springframework.org/schema/context/spring-context.xsd
+	 httP://www.springframework.org/schema/aop
+	 httP://www.springframework.org/schema/aop/spring-aop.xsd
+	 http://www.springframework.org/schema/mvc
+	 httP://www.springframework.org/schema/mvc/spring-mvc.xsd">
+	
+	<context:component-scan base-package="controller,logic,dao"/>
+	<mvc:annotation-driven />
+	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
+																	<!--  이름에 따라 알아서 맵핑?? -->
+	
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass">
+			<value>org.springframework.web.servlet.view.JstlView</value>
+		</property>
+		<property name="prefix">
+			<value>/WEB-INF/view/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list><!-- messages.properties 파일 찾음 -->
+				<value>messages</value>
+				<!--  messages_ko_KR 로 하면 브라우저에서 넘길때 각국의
+				국가 코드 가 넘어가는데 저렇게 파일명을 하면 저 코드가 있는 
+				프러퍼티 파일을 먼저 찾게됨 ? 국가별 에러코드 처리 가능  -->
+			</list>
+		</property>
+	</bean>
+	<!--  예외 처리 설정 -->
+	<bean id="exceptionHandler" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings"><value></value></property>
+	</bean>
+	<!--  파일 업로드 설정 : enctype='multipart/form-data' 형식인 경우 실행  -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" 
+		p:maxUploadSize="104857600" p:maxInMemorySize="10485760"/>
+	<!--  업로드 최대 100M 까지  -->
+	
+</beans>
