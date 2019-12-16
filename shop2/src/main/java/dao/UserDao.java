@@ -1,7 +1,11 @@
 package dao;
 
+import java.util.*;
+
 import javax.sql.DataSource;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -25,5 +29,12 @@ public class UserDao {
 				+ ":postcode, :address, :email)";
 		template.update(sql, param);
 		
+	}
+	public User selectOne(String userid) {
+		String sql = "select *From useraccount where userid=:userid";
+		RowMapper<User> mapper = new BeanPropertyRowMapper<User>(User.class);
+		Map<String, String> param = new HashMap<String, String>();
+		param.put("userid",  userid);
+		return template.queryForObject(sql, param, mapper);
 	}
 }
