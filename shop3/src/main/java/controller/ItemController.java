@@ -3,6 +3,8 @@ package controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -46,6 +48,38 @@ public class ItemController {
 		}
 		service.itemCreate(item, request);
 		mav.setViewName("redirect:/item/list.shop");
+		return mav;
+	}
+	@PostMapping("update") //    @Valid :  Item에 들어온 값들의 유효성 검사를 함 
+	public ModelAndView update(@Valid Item item, BindingResult bresult, HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView("item/edit");
+		if(bresult.hasErrors()) {
+			mav.getModel().putAll(bresult.getModel());
+			return mav;
+		}
+		service.itemUpdate(item, request);
+		mav.setViewName("redirect:/item/list.shop");
+		return mav;
+	}
+	@GetMapping("delete")
+	public ModelAndView delete(int id) {
+		ModelAndView mav = new ModelAndView();
+		service.deleteItem(id);
+		mav.setViewName("redirect:/item/list.shop");
+		return mav;
+	}
+	
+	
+	//@RequestMapping("detail")
+	// 아래 메서드 이름은 바꿔도 됨. 
+	// RequestMapping으로 헀으니까
+	// dispactureServlet? 가 *.shop 을 알아서 호출
+	@GetMapping("*") // 그 외 요청 정보 
+	// get 방식 요청 처리
+	public ModelAndView detail(String  id) { // 파라미터 자동으로 받아옴
+		ModelAndView mav = new ModelAndView(); //  뷰에 이름이 null이면 url로 들어가게됨
+		Item item = service.detailView(id);
+		mav.addObject("item", item);
 		return mav;
 	}
 	

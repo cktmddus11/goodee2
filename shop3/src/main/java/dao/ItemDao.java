@@ -9,9 +9,11 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import logic.Item;
+import logic.User;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import java.util.HashMap;
@@ -21,6 +23,7 @@ public class ItemDao {
 	private NamedParameterJdbcTemplate template;
 	private RowMapper<Item> mapper = 
 			new BeanPropertyRowMapper<Item>(Item.class);
+	// mapper : item형태로 리턴값을 보낼수있음, 자동으로 빈 클래스를 채워줌
 	private Map<String, Object> param = new HashMap<>();
 	
 	@Autowired // 내 컨테이너 안에서 자료형이 DataSource 인 객체를 주입해
@@ -44,4 +47,30 @@ public class ItemDao {
 		template.update(sql,  proparam);
 		
 	}
+
+	public Item detailView(String id) {
+		param.clear();
+		param.put("id",  id);
+		return template.queryForObject("select * from item where id=:id", param, mapper);
+		
+	}
+
+	public void update(Item item) {
+		String sql = "update item set name = :name, price = :price, "
+				+ "description = :description, pictureUrl = :pictureUrl"
+				+ " where id = :id";
+		SqlParameterSource proparam = new BeanPropertySqlParameterSource(item);
+		template.update(sql, proparam);
+		
+	}
+
+	public void delete(int id) {
+		String sql = "delete from item where id =:id";
+		param.clear();
+		param.put("id",  id);
+		template.update(sql,  param);
+		
+	}
+
+	
 }
