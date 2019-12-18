@@ -1,7 +1,8 @@
 package logic;
 
+import java.io.File;
 import java.util.List;
-import java.io.*;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,17 +10,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import dao.ItemDao;
-
-@Service // @Component + service 기능
-public class ShopService {
+@Service
+public class ShopServiceCsy implements ShopService {
 	@Autowired
 	private ItemDao itemDao;
-	@Autowired
-	private UserDao userDao;
-	public List<Item> getItemList() { // 가져온 정보를 리스트로 만들어서 리턴
+
+	@Override
+	public List<Item> getItemList() {
 		return itemDao.list();
 	}
 
+	@Override
 	public void itemCreate(Item item, HttpServletRequest request) {
 		// 업로드 된 이미지 파일 존재 request업로드 경로 쓰려고
 		if (item.getPicture() != null && !item.getPicture().isEmpty()) {
@@ -48,11 +49,13 @@ public class ShopService {
 		}
 
 	}
-	// 쌤코드 getItem이랑 같음
-	public Item detailView(String id) {
-		return itemDao.detailView(id);
+
+	@Override
+	public Item getItem(String id) {
+		return itemDao.selectOne(id);
 	}
 
+	@Override
 	public void itemUpdate(Item item, HttpServletRequest request) {
 		// 수정된 이미지 존재
 		if (item.getPicture() != null && !item.getPicture().isEmpty()) {
@@ -65,20 +68,10 @@ public class ShopService {
 
 	}
 
-	public void deleteItem(int id) {
+	@Override
+	public void itemDelete(String id) {
 		itemDao.delete(id);
-		
+
 	}
 
-	public void userInsert(User user) {
-		userDao.userinsert(user);
-	}
-
-	public User getUser(String userid) {
-		return userDao.selectOne(userid);
-	}
-
-	public Item getItem(String id) { // detailview랑 같음
-		return itemDao.detailView(id);
-	}
 }

@@ -22,11 +22,13 @@ public class UserLoginAspect {
 	// 로그인 검증 처리시 check 메서드, session 객체를 넣어서 메서드를 만들어 주면 됨
 	public Object userLoginCheck(ProceedingJoinPoint joinPoint, HttpSession session) throws Throwable{
 		User loginUser = (User)session.getAttribute("loginUser");
-		Object ret = joinPoint.proceed(); 
 		
 		if(loginUser == null) {
 			throw new LoginException("로그인 후 거래하세요", "login.shop");
+			// 로그아웃 상태일때 main을 접근하면 강제로 에러를 발생시킴 
+			//joinPoint부분으로 갈수 없음 
 		}
+		Object ret = joinPoint.proceed(); 
 		return ret;
 		
 	}

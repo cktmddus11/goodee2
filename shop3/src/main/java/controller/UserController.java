@@ -81,8 +81,10 @@ public class UserController {
 		session.invalidate();
 		return "redirect:login.shop";
 	}
-	@RequestMapping("main")
+	@RequestMapping("main") // UserLoginAspect 클래스에 해당하는 핵심로직
 	public String checkmain(HttpSession session) { // 핵심 로직
+		// UserLoginAspect 클래스 적용한 포인트 컷에 args가 session 객체를 
+		// 가지고 있어야 핵심로직을 지정함 
 		return "user/main";
 	}
 	

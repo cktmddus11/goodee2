@@ -1,7 +1,9 @@
-package spring;
+package main;
 
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
+
+import spring.WriteImpl;
 
 public class Main1 {
 	public static void main(String[] args) {
