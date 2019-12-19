@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import exception.LoginException;
@@ -12,6 +13,7 @@ import logic.User;
 
 @Component
 @Aspect
+@Order(1)
 public class UserLoginAspect {
 	//                         접근제어자  패키지.User로 시작하는 모든 클래스.check로 시작하는 메서드 
 	//                         매개변수 상관없고 그리고 앞 매개변수 상관없고 뒤 메개변수 session 있어야함

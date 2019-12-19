@@ -20,7 +20,7 @@
 			<th>합계</th>
 		</tr>
 		<c:set var="tot" value="${0}"/>
-		<c:forEach items="${cart.itemSetList}" var="itemSet" varStatus="status">
+		<c:forEach items="${cart.itemSetList}" var="itemSet" varStatus="stat">
 		<tr>
 			<td>${itemSet.item.name}</td>
 			<td>${itemSet.item.price}</td>

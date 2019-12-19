@@ -20,8 +20,15 @@ public class Cart {
 				}
 		}
 			itemSetList.add(itemSet);
-		
-		
-		
 	}
+	public long getTotal() {
+		long sum = 0;
+		for(ItemSet i : itemSetList) {
+			Item item = i.getItem();
+			int cnt = i.getQuantity();
+			sum += item.getPrice() * cnt;
+		}
+		return sum;
+	}
+
 }

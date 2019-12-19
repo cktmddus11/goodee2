@@ -1,5 +1,6 @@
 package logic;
 
+import java.util.Date;
 import java.util.List;
 import java.io.*;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import dao.ItemDao;
+import dao.SaleDao;
+import dao.SaleItemDao;
 
 @Service // @Component + service 기능
 public class ShopService {
@@ -16,6 +19,12 @@ public class ShopService {
 	private ItemDao itemDao;
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private SaleDao saleDao;
+	@Autowired
+	private SaleItemDao saleItemDao;
+	
+	
 	public List<Item> getItemList() { // 가져온 정보를 리스트로 만들어서 리턴
 		return itemDao.list();
 	}
@@ -81,4 +90,24 @@ public class ShopService {
 	public Item getItem(String id) { // detailview랑 같음
 		return itemDao.detailView(id);
 	}
+
+	public Sale checkend(User loginUser, Cart cart) {
+		Sale sale = new Sale();
+		sale.setSaleid(saleDao.getMaxSaleId());
+		sale.setUser(loginUser);
+		sale.setUserid(loginUser.getUserid());
+		sale.setUpdatetime(new Date());
+		saleDao.insert(sale);
+		List<ItemSet> itemList = cart.getItemSetList();
+		int i = 0;
+		for(ItemSet is : itemList) {
+			int saleItemId = ++i;
+			SaleItem saleItem = new SaleItem(sale.getSaleid(), saleItemId, is);
+			sale.getItemList().add(saleItem);
+			saleItemDao.insert(saleItem);
+		}
+		return sale;
+		
+	}
+
 }

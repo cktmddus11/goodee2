@@ -48,8 +48,9 @@
 	<bean id="exceptionHandler" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="exceptionMappings"><value>
 			exception.LoginException=exception
-			                             <!--  exception 뷰 -->
+			exception.CartEmptyException=exception
 		</value></property>
+		  <!--exception 패키지에 에외처리  클래스  = exception.jsp -->
 	</bean>
 	<!--  파일 업로드 설정 : enctype='multipart/form-data' 형식인 경우 실행  -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" 
