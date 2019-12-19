@@ -99,11 +99,11 @@ public class CartControllelr {
 		ModelAndView mav = new ModelAndView();
 		Cart cart = (Cart) session.getAttribute("CART");
 		User loginUser = (User) session.getAttribute("loginUser");
-		
+		// sale : 주문 정보 내역
 		Sale sale = service.checkend(loginUser, cart);
 		
-		long total = cart.getTotal();
-		session.removeAttribute("CART");
+		long total = cart.getTotal(); // 주문상품의 총 금액 리턴
+		session.removeAttribute("CART"); // 장바구니 내용 제거
 		mav.addObject("sale", sale);
 		mav.addObject("total", total);
 		return mav;

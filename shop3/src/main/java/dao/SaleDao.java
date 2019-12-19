@@ -24,6 +24,7 @@ public class SaleDao {
 	}
 	public int getMaxSaleId() {
 		String sql = "select ifnull(max(saleid), 0) from sale";
+		// sale 테이블에 저장된 saleid값의 최대값
 		Integer max = template.queryForObject(sql, param, Integer.class);
 		return max+1;
 	}

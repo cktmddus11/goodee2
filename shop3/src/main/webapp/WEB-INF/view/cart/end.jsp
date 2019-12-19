@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>주문 확정 상품</title>
 </head>
-<body>
+<body> <!--  sale.user.username -->
 	<h2>${loginUser.username}님이 주문하신 정보입니다.</h2>
 	<h2>배송지 정보</h2>
 	<table>

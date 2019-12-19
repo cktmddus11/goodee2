@@ -12,8 +12,8 @@ public class SaleItem {
 		this.saleid = saleid;
 		this.saleitemid = saleitemid;
 		this.item = itemSet.getItem();
-		this.itemid = item.getId();
-		this.quantity = itemSet.getQuantity();
+		this.itemid = item.getId(); // 상품 아이디
+		this.quantity = itemSet.getQuantity();  // 수량 
 	}
 	public int getSaleid() {
 		return saleid;

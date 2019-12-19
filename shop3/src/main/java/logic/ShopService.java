@@ -92,16 +92,19 @@ public class ShopService {
 	}
 
 	public Sale checkend(User loginUser, Cart cart) {
+		// 주문자 정보를 sale테이블에 저장
 		Sale sale = new Sale();
-		sale.setSaleid(saleDao.getMaxSaleId());
-		sale.setUser(loginUser);
-		sale.setUserid(loginUser.getUserid());
-		sale.setUpdatetime(new Date());
+		// sale 테이블의 saleid값 + 1
+		sale.setSaleid(saleDao.getMaxSaleId()); 
+		sale.setUser(loginUser); // 구매자 정보
+		sale.setUserid(loginUser.getUserid()); // 구매자 아이디
+		sale.setUpdatetime(new Date()); // 주문시간
 		saleDao.insert(sale);
+		// 주문 상품 정보를 cart 에서 조회
 		List<ItemSet> itemList = cart.getItemSetList();
 		int i = 0;
 		for(ItemSet is : itemList) {
-			int saleItemId = ++i;
+			int saleItemId = ++i; 
 			SaleItem saleItem = new SaleItem(sale.getSaleid(), saleItemId, is);
 			sale.getItemList().add(saleItem);
 			saleItemDao.insert(saleItem);
