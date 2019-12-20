@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import dao.ItemDao;
 import dao.SaleDao;
 import dao.SaleItemDao;
+import dao.UserDao;
 
 @Service // @Component + service 기능
 public class ShopService {
@@ -112,5 +113,24 @@ public class ShopService {
 		return sale;
 		
 	}
+
+	public List<Sale> salelist(String id) {
+		return saleDao.list(id); // 사용자 id
+	}
+
+	public List<SaleItem> saleItemList(int saleid) {
+		return saleItemDao.list(saleid); // saleid 주문번호
+	}
+
+	public void userUpdate(User user) {
+		userDao.update(user);
+		
+	}
+
+	public void userDelete(String userid) {
+		userDao.delete(userid);
+	}
+
+	
 
 }

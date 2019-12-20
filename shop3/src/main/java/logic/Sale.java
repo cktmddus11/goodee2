@@ -11,6 +11,15 @@ public class Sale {
 	private User user;
 	private List<SaleItem> itemList = new ArrayList<SaleItem>();
 	
+	public long getTotal() {
+		long sum = 0;
+		for(SaleItem si : itemList) {
+			Item item = si.getItem();
+			sum += si.getQuantity() * item.getPrice();
+		}
+		return sum;
+	}
+
 	public int getSaleid() {
 		return saleid;
 	}

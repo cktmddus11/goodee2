@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+
 import exception.LoginException;
 import logic.User;
 
@@ -26,7 +27,7 @@ public class UserLoginAspect {
 		User loginUser = (User)session.getAttribute("loginUser");
 		
 		if(loginUser == null) {
-			throw new LoginException("로그인 후 거래하세요", "login.shop");
+			throw new LoginException("1. 로그인 후 거래하세요", "login.shop");
 			// 로그아웃 상태일때 main을 접근하면 강제로 에러를 발생시킴 
 			//joinPoint부분으로 갈수 없음 
 		}
@@ -36,4 +37,17 @@ public class UserLoginAspect {
 	}
 	/* around advice는 joinPoint.proceed() 전 후로 before, AfterThrowing 
 	 * 로 나뉨 */
+	@Around("execution(* controller.User*.check*(..)) && args(id, session)")
+	public Object userIdCheck(ProceedingJoinPoint joinPoint, String id, HttpSession session) throws Throwable {
+		User loginUser = (User)session.getAttribute("loginUser");
+		if(loginUser == null) {
+			throw new LoginException("2. 로그인 후 거래하세요", "login.shop");
+		}
+		if(!loginUser.getUserid().equals("admin") && !loginUser.getUserid().equals(id)) {
+			throw new LoginException("본인 정보만 조회 가능합니다.", "main.shop");
+		}
+		Object ret = joinPoint.proceed();
+		return ret;
+	}
+	
 }

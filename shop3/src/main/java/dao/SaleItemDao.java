@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -32,6 +33,12 @@ public class SaleItemDao {
 		SqlParameterSource proparam = new BeanPropertySqlParameterSource(si);
 		template.update(sql, proparam);
 		
+	}
+	public List<SaleItem> list(int saleid) {
+		String sql = "select *from saleitem where saleid =:saleid";
+		param.clear();
+		param.put("saleid", saleid);
+		return template.query(sql, param, mapper);
 	}
 	
 	

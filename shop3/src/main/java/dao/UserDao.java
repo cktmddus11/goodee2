@@ -1,4 +1,4 @@
-package logic;
+package dao;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +12,8 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+
+import logic.User;
 @Repository 
 public class UserDao {
 	private NamedParameterJdbcTemplate template;
@@ -42,4 +44,23 @@ public class UserDao {
 		param.put("userid",  userid);
 		return template.queryForObject(sql, param, mapper);
 	}
+
+	public void update(User user) {
+		String sql = "update useraccount set "
+				+ "username = :username, phoneno=:phoneno, "
+				+ "postcode = :postcode, email=:email, "
+				+ "birthday = :birthday, address=:address"
+				+ " where userid = :userid";
+		SqlParameterSource proparam = new BeanPropertySqlParameterSource(user);
+		template.update(sql,  proparam);
+	}
+
+	public void delete(String userid) {
+		param.clear();
+		param.put("userid", userid);
+		template.update("delete from useraccount where "
+				+ "userid = :userid", param);
+	}
+
+	
 }
