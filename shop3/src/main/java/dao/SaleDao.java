@@ -19,7 +19,7 @@ import logic.Sale;
 @Repository
 public class SaleDao {
 	private NamedParameterJdbcTemplate template;
-	private Map<String, Object> param = new HashMap<>();
+	private Map<String, Object> param = new HashMap<String, Object>();
 	private RowMapper<Sale> mapper = 
 			new BeanPropertyRowMapper<Sale>(Sale.class);
 	@Autowired // 내 컨테이너 안에서 자료형이 DataSource 인 객체를 주입해

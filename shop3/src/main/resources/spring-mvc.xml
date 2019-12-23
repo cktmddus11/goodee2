@@ -19,8 +19,8 @@
 	<mvc:annotation-driven />
 	<aop:aspectj-autoproxy /> <!-- AOP설정 -->
 	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
-																	<!--  이름에 따라 알아서 맵핑?? -->
-	
+												<!--  이름에 따라 알아서 맵핑?? -->
+	<!--  이걸로 VIEW단 경로 찾아가는거  -->
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass">
@@ -49,6 +49,7 @@
 		<property name="exceptionMappings"><value>
 			exception.LoginException=exception
 			exception.CartEmptyException=exception
+			exception.BoardException=exception
 		</value></property>
 		  <!--exception 패키지에 에외처리  클래스  = exception.jsp -->
 	</bean>

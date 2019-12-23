@@ -24,7 +24,7 @@ public class ItemDao {
 	private RowMapper<Item> mapper = 
 			new BeanPropertyRowMapper<Item>(Item.class);
 	// mapper : item형태로 리턴값을 보낼수있음, 자동으로 빈 클래스를 채워줌
-	private Map<String, Object> param = new HashMap<>();
+	private Map<String, Object> param = new HashMap<String, Object>();
 	
 	@Autowired // 내 컨테이너 안에서 자료형이 DataSource 인 객체를 주입해
 	public void setDataSource(DataSource dataSource) { // spring-db.xml에 생성된 dataSource객체 주입

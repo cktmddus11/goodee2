@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import dao.BoardDao;
 import dao.ItemDao;
 import dao.SaleDao;
 import dao.SaleItemDao;
@@ -24,6 +25,8 @@ public class ShopService {
 	private SaleDao saleDao;
 	@Autowired
 	private SaleItemDao saleItemDao;
+	@Autowired
+	private BoardDao boardDao;
 	
 	
 	public List<Item> getItemList() { // 가져온 정보를 리스트로 만들어서 리턴
@@ -48,7 +51,8 @@ public class ShopService {
 		String uploadPath = request.getServletContext().getRealPath("/") + path;
 		File fpath = new File(uploadPath);
 		if (!fpath.exists()) {
-			fpath.mkdirs();
+			fpath.mkdirs();  // mkdirs 여러개의 푤더 생성
+			// 한개 폴더 -> mkdir
 		}
 		try {
 			// picture 업로드된 파일의 내용을 파일로 생성
@@ -129,6 +133,35 @@ public class ShopService {
 
 	public void userDelete(String userid) {
 		userDao.delete(userid);
+	}
+
+	public int boardcount() {
+		return boardDao.count();
+	}
+
+	public List<Board> boardlist(Integer pageNum, int limit) {
+		return boardDao.list(pageNum, limit);
+	}
+
+	public void boardWrite(Board board, HttpServletRequest request) {
+		// 첨부파일이 존재하는 경우
+		if(board.getFile1() != null && !board.getFile1().isEmpty()) {
+			uploadFileCreate(board.getFile1(), request,  "board/file/");
+			// 업로드된 파일 이름 설정
+			board.setFileurl(board.getFile1().getOriginalFilename());
+		}
+		// 현재 등록된 게시물 번호 최대값
+		int max = boardDao.maxnum();
+		board.setNum(++max);
+		board.setGrp(max);
+		boardDao.insert(board);
+	}
+
+	public Board getBoard(Integer num, HttpServletRequest request) {
+		if(request.getRequestURI().contains("detail.shop")) { // 경로가 저거를 포함하고 있을 때 
+			boardDao.readcntadd(num); // 조회수 증가
+		}
+		return boardDao.selectOne(num);
 	}
 
 	

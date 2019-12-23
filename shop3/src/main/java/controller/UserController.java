@@ -182,7 +182,9 @@ public class UserController {
 				mav.setViewName("redirect:/admin/list.shop");
 			}else { // 일반 사용자면 탈퇴후 로그인 페이지로 
 				session.invalidate();
-				throw new LoginException("탈퇴되셨습니다.", "login.shop");
+				mav.addObject("msg", userid+"님 회원 탈퇴되었습니다.");
+				mav.addObject("url", "login.shop");
+				mav.setViewName("alert");
 			}
 		}catch (Exception e) {
 			e.printStackTrace();

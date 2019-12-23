@@ -4,5 +4,7 @@
  		<pattern>*.shop</pattern>
  	</decorator>
  	<!-- layout 제외 설정 -->
- 	<excludes></excludes>
+ 	<excludes>
+ 		<pattern>/board/imgupload*</pattern>
+ 	</excludes>
 </decorators>
