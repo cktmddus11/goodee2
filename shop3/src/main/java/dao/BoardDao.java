@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.PropertiesBeanDefinitionReader;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -33,14 +34,25 @@ public class BoardDao {
 		template = new NamedParameterJdbcTemplate(dataSource);
 	}
 
-	public int count() {
-		return template.queryForObject("select count(*) from board", param, Integer.class);
+	public int count(String searchtype, String searchcontent) {
+		String sql = "select count(*) from board";
+		if(searchtype != null) {
+			sql += " where "+searchtype+" like :searchcontent"; // :searchtype -> ' '를 자동으로 붙여줌?
+		}
+		param.clear();
+		param.put("searchcontent", "%"+searchcontent+"%"); // '%1%'
+		return template.queryForObject(sql, param, Integer.class);
 	}
 
-	public List<Board> list(Integer pageNum, int limit) {
-		String sql =  boardcolumn + " order by grp desc, grpstep "
-				+" limit :startrow, :limit";
+	public List<Board> list(Integer pageNum, int limit, String searchtype, String searchcontent) {
 		param.clear();
+		String sql =  boardcolumn;
+		if(searchtype != null) {
+			sql += " where "+searchtype+" like :searchcontent";
+			param.put("searchcontent", "%"+searchcontent+"%");
+		}
+		sql += " order by grp desc, grpstep limit :startrow, :limit";
+		
 		param.put("startrow", (pageNum - 1) * limit);
 		param.put("limit", limit);
 		return template.query(sql, param, mapper);
@@ -75,4 +87,35 @@ public class BoardDao {
 		param.put("num", num);
 		return template.queryForObject(sql, param, mapper);
 	}
+
+	public void grpstep(int grp, int grpstep) {
+		String sql = "update board set grpstep = grpstep + 1 where grp = :grp and grpstep > :grpstep";
+		param.clear();  // 1  > 0 and 44 = 44 -> 1 + 1 = 2          
+		param.put("grp", grp);
+		param.put("grpstep", grpstep);
+		template.update(sql, param);
+	}
+
+	public String getPass(int num) {
+		String sql = "select pass from board where num = :num";
+		param.clear();
+		param.put("num",num);
+		return template.queryForObject(sql, param, String.class);
+	}
+
+	public void boardupdate(Board board) {
+		String sql = "update board set name = :name, subject=:subject," + 
+				"content=:content, file1=:fileurl where num = :num";
+		SqlParameterSource proparam = new BeanPropertySqlParameterSource(board);
+		template.update(sql, proparam);
+	}
+
+	public void boardDelete(int num) {
+		String sql = "delete from board where num = :num";
+		param.clear();
+		param.put("num", num);
+		template.update(sql, param);
+		
+	}
+
 }

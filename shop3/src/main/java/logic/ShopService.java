@@ -135,12 +135,12 @@ public class ShopService {
 		userDao.delete(userid);
 	}
 
-	public int boardcount() {
-		return boardDao.count();
+	public int boardcount(String searchtype, String searchcontent) {
+		return boardDao.count(searchtype, searchcontent);
 	}
 
-	public List<Board> boardlist(Integer pageNum, int limit) {
-		return boardDao.list(pageNum, limit);
+	public List<Board> boardlist(Integer pageNum, int limit, String searchtype, String searchcontent) {
+		return boardDao.list(pageNum, limit, searchtype, searchcontent);
 	}
 
 	public void boardWrite(Board board, HttpServletRequest request) {
@@ -164,6 +164,42 @@ public class ShopService {
 		return boardDao.selectOne(num);
 	}
 
+	public void boardReply(Board board) {
+		// grpstep 답글의 순서 최근에 단 답글이 숫자가 작음 
+		// grpstep + 1 증가
+		boardDao.grpstep(board.getGrp(), board.getGrpstep()); 
+		// 답변글 등록
+		board.setNum(boardDao.maxnum() + 1);
+		board.setGrplevel(board.getGrplevel()+1);
+		board.setGrpstep(board.getGrpstep()+1);
+		boardDao.insert(board);
+	}
+	
+	// 답글 달때 제목 RE계속 생기는 버그때문에 하는거
+	public Board getBoard(int num) {
+		return boardDao.selectOne(num);
+	}
+
+	public String getPass(int num) {
+		return boardDao.getPass(num);
+	}
+
+	public void boardUpdate(Board board, HttpServletRequest request) {
+		// 수정된 이미지 존재
+		if (board.getFile1() != null && !board.getFile1().isEmpty()) {
+			// 파일 업로드 : 업로드된 파일의 내용을 파일에 저장
+			uploadFileCreate(board.getFile1(), request, "board/img/");
+			board.setFileurl(board.getFile1().getOriginalFilename());
+			// 사진 url중 순수 사진 이름만 가져와서 item에 저장
+		}
+		boardDao.boardupdate(board);
+
+	}
+
+	public void boardDelete(int num) {
+		boardDao.boardDelete(num);
+		
+	}
 	
 
 }

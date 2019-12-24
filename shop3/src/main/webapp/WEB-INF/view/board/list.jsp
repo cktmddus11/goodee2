@@ -6,6 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>게시판 목록</title>
+<script>
+	function listdo(page){
+		document.searchform.pageNum.value = page;
+		document.searchform.submit(); //페이지 눌러도 검색창 파라미터 유지
+	}
+</script>
 </head>
 <body>
 	<table>
@@ -17,12 +23,17 @@
 					<select name="searchtype" style="width:100px;">
 						<option value="">선택하세요</option>
 						<option value="subject">제목</option>
-						<option value="name">작성자</option>
+						<option value="name" >작성자</option>
 						<option value="content">내용</option>
 					</select>
+					<script>
+						searchform.searchtype.value="${param.searchtype}";
+					</script>
 					<input type="text" name="searchcontent" 
 					value="${param.searchcontent}" style="width : 250px;">
 					<input type="submit" value="검색">
+					<input type="button" value="전체게시글 보기" onclick="location.href='list.shop'">
+					
 				</form>
 			</div>
 			</td>
@@ -62,18 +73,21 @@
 			<tr>
 				<td colspan="5">
 				<c:if test="${pageNum > 1}">
-					<a href="list.shop?pageNum=${pageNum - 1}">[이전]</a>
+				<%-- 	<a href="list.shop?pageNum=${pageNum - 1}">[이전]</a> --%>
+						<a href="javascript:listdo(${pageNum-1})">[이전]</a>
 				</c:if>
 				<c:if test="${pageNum <=1 }">[이전]</c:if>
 				<c:forEach var="a" begin="${startpage}" end="${endpage}">
 					<c:if test="${a == pageNum}">[${a}]</c:if>
 					<c:if test="${a != pageNum }">
-						<a href="list.shop?pageNum=${a}">[${a }]</a>
+						<%-- <a href="list.shop?pageNum=${a}">[${a }]</a> --%>
+						<a href="javascript:listdo(${a})">[${a}]</a>
 					</c:if>
 				</c:forEach>
 				<%-- 다음 페이지 존재 link연결--%>
 				<c:if test="${pageNum < maxpage }">
-					<a href="list.shop?pageNum=${pageNum +1}">[다음]</a>
+					<%-- <a href="list.shop?pageNum=${pageNum +1}">[다음]</a> --%>
+					<a href="javascript:listdo(${pageNum + 1})">[이전]</a>
 				</c:if>
 				<%-- 다음 페이지 없음 --%>
 				<c:if test="${pageNum >= maxpage }">[다음]</c:if>

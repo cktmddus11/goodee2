@@ -100,6 +100,7 @@ public class Board {
 				+ content + ", file1=" + file1 + ", fileurl=" + fileurl + ", regdate=" + regdate + ", readcnt="
 				+ readcnt + ", grp=" + grp + ", grplevel=" + grplevel + ", grpstep=" + grpstep + "]";
 	}
+
 	
 	
 }

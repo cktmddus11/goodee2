@@ -18,7 +18,7 @@
 		</tr>
 		<tr>
 			<td>제목</td>
-			<td class="leftcol">${board.name}</td>
+			<td class="leftcol">${board.subject}</td>
 		</tr>
 		<tr>
 			<td>내용</td>
@@ -38,7 +38,7 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<a href="replay.shop?num=${board.num}">[답변]</a>
+				<a href="reply.shop?num=${board.num}">[답변]</a>
 				<a href="update.shop?num=${board.num}">[수정]</a>
 				<a href="delete.shop?num=${board.num}">[삭제]</a>
 				<a href="list.shop">[게시물 목록]</a>
