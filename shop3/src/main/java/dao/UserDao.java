@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -12,6 +13,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import logic.User;
 @Repository 
@@ -61,6 +63,22 @@ public class UserDao {
 		template.update("delete from useraccount where "
 				+ "userid = :userid", param);
 	}
+
+	public List<User> list(String[] idchks) {
+		/*String sql = "select *from useraccunt where userid in (";
+		 * for(String id : idchks) { sql += "'"+id+"'"+((id","; } sql += ")";
+		 */
+
+		String ids = "";
+		for(int i = 0;i<idchks.length;i++) {
+			ids += "'"+idchks[i]+((i == idchks.length -1)?"'":"',");
+		}
+		String sql = "select *from useraccount where userid in ("
+				+ids+")";
+		//System.out.println(sql);
+		return template.query(sql, mapper);
+	}
+	
 
 	
 }

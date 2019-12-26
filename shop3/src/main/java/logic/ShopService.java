@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import dao.AdminDao;
 import dao.BoardDao;
 import dao.ItemDao;
 import dao.SaleDao;
@@ -27,7 +28,8 @@ public class ShopService {
 	private SaleItemDao saleItemDao;
 	@Autowired
 	private BoardDao boardDao;
-	
+	@Autowired
+	private AdminDao adminDao;
 	
 	public List<Item> getItemList() { // 가져온 정보를 리스트로 만들어서 리턴
 		return itemDao.list();
@@ -199,6 +201,14 @@ public class ShopService {
 	public void boardDelete(int num) {
 		boardDao.boardDelete(num);
 		
+	}
+
+	public List<User> userList() {
+		return adminDao.userlist();
+	}
+
+	public List<User> userList(String[] idchks) {
+		return userDao.list(idchks);
 	}
 	
 
