@@ -2,13 +2,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>kr.goodee</groupId>
-  <artifactId>shop3</artifactId>
+  <artifactId>shop4</artifactId>
   <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
-  <name>shop3 Maven Webapp</name>
+  <name>shop4 Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <dependencies>
-   <dependency>
+      <dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>4.3.25.RELEASE</version>
@@ -100,8 +100,25 @@
 			<artifactId>spring-websocket</artifactId>
 			<version>4.3.20.RELEASE</version>
 		</dependency>
+		<!--  Connection pool 관련 설정 -->
+		<dependency>
+			<groupId>com.mchange</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.5.3</version>
+		</dependency>
+		<!--  mybatis 관련 설정 -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.2.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.2.2</version>
+		</dependency>
   </dependencies>
   <build>
-    <finalName>shop3</finalName>
+    <finalName>shop4</finalName>
   </build>
 </project>
