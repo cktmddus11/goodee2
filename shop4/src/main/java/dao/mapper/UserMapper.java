@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Update;
 
 import logic.User;
 
-public interface UserMapper {
+public interface UserMapper {// 여기서는 오버로딩 불가능?해서 동일한 이름의 메서드 사용 불가
 	@Insert("insert into useraccount" + 
 			"(userid, password, username, phoneno, " + 
 			"postcode, address, email, birthday) values " + 

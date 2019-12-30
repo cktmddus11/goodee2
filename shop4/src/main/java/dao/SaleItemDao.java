@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,31 +15,23 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import dao.mapper.SaleItemMapper;
 import logic.SaleItem;
 
 @Repository
 public class SaleItemDao {
-	private NamedParameterJdbcTemplate template;
+	@Autowired
+	SqlSessionTemplate sqlSession;
 	private Map<String, Object> param = new HashMap<String, Object>();
-	private RowMapper<SaleItem> mapper = new BeanPropertyRowMapper<SaleItem>(SaleItem.class);
 
-	@Autowired // 내 컨테이너 안에서 자료형이 DataSource 인 객체를 주입해
-	public void setDataSource(DataSource dataSource) { // spring-db.xml에 생성된 dataSource객체 주입
-		template = new NamedParameterJdbcTemplate(dataSource);
-	}
 	public void insert(SaleItem si) {
-		String sql = "insert into saleitem "
-				+"(saleid, saleitemid, itemid, quantity) "
-				+"values (:saleid, :saleitemid, :itemid, :quantity)";
-		SqlParameterSource proparam = new BeanPropertySqlParameterSource(si);
-		template.update(sql, proparam);
+		sqlSession.getMapper(SaleItemMapper.class).insert(si);
 		
 	}
 	public List<SaleItem> list(int saleid) {
-		String sql = "select *from saleitem where saleid =:saleid";
 		param.clear();
 		param.put("saleid", saleid);
-		return template.query(sql, param, mapper);
+		return sqlSession.getMapper(SaleItemMapper.class).select(param);
 	}
 	
 	

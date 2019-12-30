@@ -29,7 +29,7 @@
 			</tr>
 			<tr>
 				<td>제목</td>
-				<td><form:input path="subject" value="RE : ${board.subject}" />
+				<td><form:input path="subject" value="${board.subject}" />
 				<font color="red"><form:errors path="subject"/></font>
 			</tr>
 			<tr>

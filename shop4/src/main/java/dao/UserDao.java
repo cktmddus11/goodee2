@@ -57,7 +57,8 @@ public class UserDao {
 //		}
 		
 		param.clear();
-		param.put("userids",  ids);
+		param.put("userids",  ids); // 리스트 말고 idchks 바로 넣어줘도 됨
+		// param.put("userids", idchks);
 		/*
 		 * String sql = "select *from useraccount where userid in (" +ids+")";
 		 */

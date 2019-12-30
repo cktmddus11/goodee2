@@ -130,7 +130,7 @@ public class BoardController {
 				e.printStackTrace();
 			}
 		}
-		String fileName = "/shop3/board/imgfile/" + upload.getOriginalFilename();
+		String fileName = "/shop4/board/imgfile/" + upload.getOriginalFilename();
 		model.addAttribute("fileName", fileName);
 		model.addAttribute("CKEditorFuncNum", CKEditorFuncNum);
 		return "ckedit";

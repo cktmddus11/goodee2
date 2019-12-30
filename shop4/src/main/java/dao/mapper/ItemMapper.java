@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Update;
 
 import logic.Item;
 
-public interface ItemMapper {
+public interface ItemMapper { 
 	@Select({"<script>", 
 			"select *From item",
 			"<if test='id != null'>where id=#{id}</if>",

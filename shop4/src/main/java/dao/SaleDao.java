@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,35 +16,27 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import dao.mapper.SaleMapper;
 import logic.Sale;
 
 @Repository
 public class SaleDao {
-	private NamedParameterJdbcTemplate template;
+	@Autowired
+	private SqlSessionTemplate sqlSession;
 	private Map<String, Object> param = new HashMap<String, Object>();
-	private RowMapper<Sale> mapper = 
-			new BeanPropertyRowMapper<Sale>(Sale.class);
-	@Autowired // 내 컨테이너 안에서 자료형이 DataSource 인 객체를 주입해
-	public void setDataSource(DataSource dataSource) { // spring-db.xml에 생성된 dataSource객체 주입
-		template = new NamedParameterJdbcTemplate(dataSource);
-	}
+	
 	public int getMaxSaleId() {
-		String sql = "select ifnull(max(saleid), 0) from sale";
 		// sale 테이블에 저장된 saleid값의 최대값
-		Integer max = template.queryForObject(sql, param, Integer.class);
+		Integer max = sqlSession.getMapper(SaleMapper.class).maxsaleid();
 		return max+1;
 	}
 	public void insert(Sale sale) {
-		String sql = "insert into sale (saleid, userid, updatetime) "
-				+"values (:saleid, :userid, :updatetime)";
-		SqlParameterSource proparam = new BeanPropertySqlParameterSource(sale);
-		template.update(sql, proparam);
+		sqlSession.getMapper(SaleMapper.class).insert(sale);
 	}
 	public List<Sale> list(String id) {
-		String sql = "select *from sale where userid=:userid";
 		param.clear();
 		param.put("userid", id);
-		return template.query(sql, param, mapper);
+		return sqlSession.getMapper(SaleMapper.class).select(param);
  
 	}
 }
