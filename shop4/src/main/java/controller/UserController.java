@@ -75,7 +75,9 @@ public class UserController {
 				session.setAttribute("loginUser", dbUser);
 				mav.setViewName("redirect:main.shop");
 			}
-		}catch(EmptyResultDataAccessException e) {
+		}catch(LoginException e) { // 
+			// 아이디 없는 거 입력했을 때 에러 처리가 안됨	
+			// EmptyResult 어쩌구 에러는 spring jdbc에서만 발생해서?
 			e.printStackTrace();
 			bresult.reject("error.login.id");
 		}
@@ -98,10 +100,11 @@ public class UserController {
 	public ModelAndView checkmypage(String id, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		User user = service.getUser(id); // 사용자 정보 
-		// admin인 경우 파라미터에 해당하는 id 조회?
-		// 사용자가 주문한 모든 주문내역 조회 - 사용자 id, 주문id, 날짜
-		List<Sale> salelist = service.salelist(id); // 사용자가 주문한 레스트 
-	
+		/* 
+		 * 사용자가 주문한 모든 주문 내역 조회
+		 * admin인 경우 모든 주문내역 조회
+		 * */
+		List<Sale> salelist = service.salelist(id);
 		for(Sale sa : salelist) { 
 			// 주문 아이디로 saleitem테이블에서 조회해서 주문한 물품들을 리스트로 만듦
 			// 주문번호에 해당하는 주문상품 내역 조회
@@ -112,6 +115,11 @@ public class UserController {
 				Item item = service.getItem(si.getItemid()); // 아이템번호로 아이템정보 가져옴
 				si.setItem(item); 
 			}
+			try {
+				User saleUser = service.getUser(sa.getUserid());
+				sa.setUser(saleUser);
+			}
+			catch(LoginException e) {}
 			sa.setItemList(saleitemlist); // 구매한 물품들의 정보객체들을 리스트로 만듦
 		}
 		mav.addObject(user);
@@ -129,7 +137,7 @@ public class UserController {
 		mav.addObject("user", user);
 		return mav;
 	}
-	@PostMapping("upate")
+	@PostMapping("update")
 	public ModelAndView checkupdate(@Valid User user, BindingResult bresult, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		if(bresult.hasErrors()) {

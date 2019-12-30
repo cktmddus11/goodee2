@@ -50,6 +50,12 @@ public class Sale {
 	public void setItemList(List<SaleItem> itemList) {
 		this.itemList = itemList;
 	}
+
+	@Override
+	public String toString() {
+		return "Sale [saleid=" + saleid + ", userid=" + userid + ", updatetime=" + updatetime + ", user=" + user
+				+ ", itemList=" + itemList + "]";
+	}
 	
 	
 }

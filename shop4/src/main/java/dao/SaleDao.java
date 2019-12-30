@@ -35,7 +35,9 @@ public class SaleDao {
 	}
 	public List<Sale> list(String id) {
 		param.clear();
-		param.put("userid", id);
+		if(!id.equals("admin")) {
+			param.put("userid", id);
+		}
 		return sqlSession.getMapper(SaleMapper.class).select(param);
  
 	}

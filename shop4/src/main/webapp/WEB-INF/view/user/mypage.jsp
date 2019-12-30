@@ -50,11 +50,11 @@ content="text/html;">
 			<td id="tab1" class="tab">
 				<a href="javascript:disp_div('minfo', 'tab1')">회원정보 보기</a>
 			</td>
-			<c:if test="${param.id != 'admin'}">
+		<%-- 	<c:if test="${param.id != 'admin'}"> --%>
 				<td id="tab2" class="tab">
 					<a href="javascript:disp_div('oinfo', 'tab2')">주문정보 보기</a>
 				</td>
-			</c:if>
+		<%-- 	</c:if> --%>
 		</tr>
 	</table>
 	<%-- oinfo : 주문 정보 출력 --%>
@@ -62,6 +62,9 @@ content="text/html;">
 		<table>
 			<tr>
 				<th>주문정보</th>
+				<c:if test="${param.id == 'admin'}">
+				<th>주문고객</th>
+				</c:if>
 				<th>주문일자</th>
 				<th>총주문금액 </th>
 			</tr>
@@ -72,13 +75,18 @@ content="text/html;">
 							${sale.saleid}
 						</a>
 					</td> 
+					<c:if test="${param.id == 'admin'}">
+					<c:if test="${!empty sale.user}">
+					<td>${sale.user.username}(${sale.user.userid}<%--sale.userid? 왜 돼?--%>)</td>
+					</c:if>
+					</c:if>
 					<td align="center">
 						<fmt:formatDate value="${sale.updatetime}" pattern="yyyy-MM-dd"/>
 					</td>
 					<td align="right">${sale.total}원</td>
 				</tr>
 				<tr id="saleLine${stat.index}" class="saleLine">
-					<td colspan="3" align="center">
+					<td colspan="4" align="center">
 						<table>
 							<tr>
 								<th width="25%">상품명</th>

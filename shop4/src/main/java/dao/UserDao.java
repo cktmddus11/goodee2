@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import dao.mapper.ItemMapper;
 import dao.mapper.UserMapper;
+import exception.LoginException;
 import logic.User;
 @Repository 
 public class UserDao {
@@ -33,10 +34,14 @@ public class UserDao {
 	}
 
 	public User selectOne(String userid) {
-		/* String sql = "select *From useraccount where userid = :userid"; */
 		param.clear();
 		param.put("userid",  userid);
-		return sqlSession.getMapper(UserMapper.class).select(param).get(0);
+		List<User> list = sqlSession.getMapper(UserMapper.class).select(param);
+		if(list == null || list.isEmpty()) {
+			throw new LoginException("해당 아이디가 없습니다.", "");
+		}else {
+			return list.get(0);
+		}
 	}
 
 	public void update(User user) {

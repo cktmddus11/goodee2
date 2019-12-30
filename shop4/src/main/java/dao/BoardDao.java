@@ -63,7 +63,7 @@ public class BoardDao {
 	public Board selectOne(Integer num) {
 		param.clear();
 		param.put("num", num);
-		return sqlSession.getMapper(BoardMapper.class).selectOne(param);
+		return sqlSession.getMapper(BoardMapper.class).select(param).get(0);
 	}
 
 	public void grpstep(int grp, int grpstep) {
