@@ -21,11 +21,13 @@ public interface BoardMapper {
 			, "</script>"})
 	int boardcount(Map<String, Object> param);
 	
-	@Select({"<script>", boardcolumn,
-		 "<if test='searchtype != null'> where ${searchtype} like #{searchcontent}</if>",
-		 "<if test='num != null'> where num = #{num}</if>",
-		 "</script>"
-	})
+	   @Select({"<script>", boardcolumn,
+	         "<if test='searchtype != null'> where ${searchtype} like #{searchcontent}</if>",
+	         "<if test='num != null'> where num = #{num}</if>", 
+	         "<if test='num == null'> order by grp desc, ",
+	         "grpstep limit #{startrow}, #{limit} </if>",
+	         "</script>"})
+	 
 	List<Board> select(Map<String, Object> param); // selectOne이랑 검색 하고 조회합친 메서드
 	
 	@Select("select ifnull(max(num), 0) from board")

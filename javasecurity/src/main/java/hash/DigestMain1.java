@@ -16,8 +16,10 @@ public class DigestMain1 {
 		plain = br.readLine().getBytes();
 		System.out.println("평문 : "+new String(plain));
 		for(String al : algo) {
+			// 해시알고리즘
 			MessageDigest md = MessageDigest.getInstance(al);
-			hash = md.digest(plain); // MD5 행태의 다이제스트로 변환?
+			hash = md.digest(plain); // MD5 행태의 다이제스트(압축?)로 변환?
+			// 알고리즘 끝
 			System.out.println(al+"해쉬값 크기 : "+(hash.length * 8)+"bits");
 			System.out.print("해쉬값 : ");
 			for(byte b : hash) System.out.printf("%02X", b);
