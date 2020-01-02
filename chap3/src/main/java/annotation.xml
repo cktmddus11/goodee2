@@ -11,4 +11,22 @@
 	 <!--  chap3 패키지 중 @Component 를 가진 클래스를 객체화시킴 -->
 <context:component-scan base-package="chap3"/> <!--  component 객체화? -->
 <context:annotation-config/>
+<bean id="camera1" class="chap3.Camera">
+	<property name="number" value="1" />
+</bean>
+<bean id="camera2" class="chap3.Camera" p:number="2" />
+<bean id="camera3" class="chap3.Camera" p:number="3" />
+<bean id="camera4" class="chap3.Camera" p:number="4" />
+<bean id="windowSensor" class="chap3.InfraredRaySensor">
+	<constructor-arg value="창센서" />
+	<qualifier value="intrusionDetection"/>
+</bean>
+<bean id="doorSensor" class="chap3.InfraredRaySensor">
+	<constructor-arg value="현관센서"/>
+	<qualifier value="intrusionDetection"/>
+</bean>
+<bean id="lampSensor" class="chap3.InfraredRaySensor">
+	<constructor-arg value="전등센서"/>
+</bean>
+<bean id="displayMode" class="chap3.DisplayMode" p:type="GRID"/>
 </beans>

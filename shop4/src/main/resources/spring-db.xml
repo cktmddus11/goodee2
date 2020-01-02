@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	 http://www.springframework.org/schema/beans/spring-beans.xsd
+	 http://www.springframework.org/schema/context
+	 http://www.springframework.org/schema/context/spring-context.xsd">
+	<!--  db의 Connection 객체 설정
+	이객체를 itemDao에 주입됨 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+	destroy-method="close">
+		<property name="driverClass">
+			<value>org.mariadb.jdbc.Driver</value>
+		</property>
+		<property name="jdbcUrl">
+			<value>jdbc:mariadb://localhost:3306/classdb</value>
+		</property>
+
+		<property name="user">
+			<value>scott</value>
+		</property>
+		<property name="password">
+			<value>1234</value>
+		</property>
+		<property name="maxPoolSize"> <!--  최대 Connection 객체 수 설정-->
+			<value>20</value> 
+		</property>
+		<property name="minPoolSize"><!-- 최소 Connection 객체 수 설정-->
+			<value>3</value>
+		</property>
+		<property name="initialPoolSize"> <!-- 초기 Connection 객체 수 설정  -->
+			<value>5</value>
+		</property>
+		<property name="acquireIncrement"> <!-- 증가되는  Connection 객체 수 설정 -->
+			<value>5</value>
+		</property>
+	</bean>
+	<!--  mybatis 관련 설정 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+	</bean>
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory"/>
+	</bean>
+	
+</beans>

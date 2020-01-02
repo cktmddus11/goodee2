@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- /src/main/java/applicationContext.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	 http://www.springframework.org/schema/beans/spring-beans.xsd
+	 http://www.springframework.org/schema/context
+	 http://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- handlerMapping : url과 Controller 연결 -->
+	<bean id="handlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings"> <!-- 프로퍼티 설정같은거 -->
+			<value>
+				userEntry.shop=userEntryController
+				login.shop = loginController
+			</value> <!-- 요청이 들어오면 -->
+		</property>
+	</bean> <!-- 서버가 시작될때 아래 객체들이 이미 준비중 -->
+	<bean id="loginController" class="controller.LoginController"
+		p:shopService-ref="shopService" p:validator-ref="loginValidator" />
+	<bean id="loginValidator" class="util.LoginValidator" />
+
+
+	<bean id="userEntryController"
+		class="controller.UserEntryController" p:shopService-ref="shopService"
+		p:userValidator-ref="userValidator" />
+	<bean id="shopService" class="logic.ShopService"
+		p:userDao-ref="userDao" />
+	<bean id="userValidator" class="util.UserValidator" />
+	<bean id="userDao" class="dao.UserDao"
+		p:dataSource-ref="dataSource" />
+	<!-- 뷰 결정자 (webapp가 루트 폴더) /WEB-INF/view/index.jsp -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass">
+			<value>org.springframework.web.servlet.view.JstlView</value>
+		</property>
+		<property name="prefix">
+			<value>/WEB-INF/view/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list><!-- messages.properties 파일 찾음 -->
+				<value>messages</value>
+				<!--  messages_ko_KR 로 하면 브라우저에서 넘길때 각국의
+				국가 코드 가 넘어가는데 저렇게 파일명을 하면 저 코드가 있는 
+				프러퍼티 파일을 먼저 찾게됨 ? 국가별 에러코드 처리 가능  -->
+			</list>
+		</property>
+	</bean>
+</beans>
+<!-- a. do -> controller -> Action dispatcherServlet -> COntroller action.propertis(를 
+	xml로변경) -->

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- /src/main/java/applicationContext.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	 http://www.springframework.org/schema/beans/spring-beans.xsd
+	 http://www.springframework.org/schema/context
+	 http://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- handlerMapping : url과 Controller 연결 -->
+	 <bean id="handlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+ 		<property name="mappings"> <!-- 프로퍼티 설정같은거 -->
+	 		<value>/index.shop=indexController
+	 			   /detail.shop=detailController        
+	 		</value> <!--  요청이 들어오면 -->
+	 	</property>
+	 </bean> <!-- 서버가 시작될때 아래 객체들이 이미 준비중 -->
+	 <!--  index -->
+	 <bean id="indexController" class="controller.IndexController" p:shopService-ref="shopService" />
+	 <!--  detail -->
+	 <bean id="detailController" class="controller.DetailController" p:shopService-ref="shopService" />
+	 
+	 <bean id="shopService" class="logic.ShopService" p:itemDao-ref="itemDao"/>
+	 <bean id="itemDao" class="dao.ItemDao" p:dataSource-ref="dataSource" />
+	 <!--  뷰 결정자           (webapp가 루트 폴더)
+	 	/WEB-INF/view/index.jsp
+	 -->
+	 <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	 	<property name="viewClass">
+	 		<value>org.springframework.web.servlet.view.JstlView</value>
+	 	</property>
+	 	<property name="prefix">
+	 		<value>/WEB-INF/view/</value>
+	 	</property>
+	 	<property name="suffix">
+	 		<value>.jsp</value>
+	 	</property>
+	 </bean>
+</beans>
+<!-- 
+a. do -> controller                -> Action
+             dispatcherServlet ->  COntroller
+            action.propertis(를 xml로변경)
+ -->
